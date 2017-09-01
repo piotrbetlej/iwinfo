@@ -7,7 +7,7 @@ IWINFO_LIB_LDFLAGS = $(LDFLAGS) -shared
 IWINFO_LIB_OBJ     = iwinfo_utils.o iwinfo_wext.o iwinfo_wext_scan.o iwinfo_lib.o
 
 IWINFO_LUA         = iwinfo.so
-IWINFO_LUA_LDFLAGS = $(LDFLAGS) -shared -L. -liwinfo -llua
+IWINFO_LUA_LDFLAGS = $(LDFLAGS) -shared -L. -liwinfo -llua5.1
 IWINFO_LUA_OBJ     = iwinfo_lua.o
 
 IWINFO_CLI         = iwinfo
@@ -27,8 +27,8 @@ endif
 
 ifneq ($(filter nl80211,$(IWINFO_BACKENDS)),)
 	IWINFO_CFLAGS      += -DUSE_NL80211
-	IWINFO_CLI_LDFLAGS += -lnl-tiny
-	IWINFO_LIB_LDFLAGS += -lnl-tiny
+	IWINFO_CLI_LDFLAGS += -lnl-genl-3
+	IWINFO_LIB_LDFLAGS += -lnl-genl-3
 	IWINFO_LIB_OBJ     += iwinfo_nl80211.o
 endif
 

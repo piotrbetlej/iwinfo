@@ -22,6 +22,8 @@
  * Parts of this code are derived from the Linux iw utility.
  */
 
+#define _GNU_SOURCE
+
 #include <limits.h>
 #include <glob.h>
 #include <fnmatch.h>
@@ -412,6 +414,25 @@ static int nl80211_request(const char *ifname, int cmd, int flags,
 		return -ENOMEM;
 
 	return nl80211_send(cv, cb_func, cb_arg);
+}
+
+static int nl80211_request_ap_force(const char *ifname, int cmd, int flags,
+                           int (*cb_func)(struct nl_msg *, void *),
+                           void *cb_arg)
+{
+	struct nl80211_msg_conveyor *cv;
+
+	cv = nl80211_msg(ifname, cmd, flags);
+	NLA_PUT_U32(cv->msg, NL80211_ATTR_SCAN_FLAGS, (unsigned int) NL80211_SCAN_FLAG_AP);
+
+	if (!cv)
+	  goto nla_put_failure;
+
+	return nl80211_send(cv, cb_func, cb_arg);
+
+        nla_put_failure:
+	nl80211_free(cv);
+	return -ENOMEM;
 }
 
 static struct nlattr ** nl80211_parse(struct nl_msg *msg)
@@ -2088,7 +2109,7 @@ static int nl80211_get_scanlist_nl(const char *ifname, char *buf, int *len)
 {
 	struct nl80211_scanlist sl = { .e = (struct iwinfo_scanlist_entry *)buf };
 
-	if (nl80211_request(ifname, NL80211_CMD_TRIGGER_SCAN | NL80211_SCAN_FLAG_AP, 0, NULL, NULL))
+	if (nl80211_request_ap_force(ifname, NL80211_CMD_TRIGGER_SCAN, 0, NULL, NULL))
 		goto out;
 
 	if (nl80211_wait("nl80211", "scan", NL80211_CMD_NEW_SCAN_RESULTS))
