@@ -36,6 +36,8 @@ IWINFO_CLI_LIBFLAGS += -liwinfo
 
 compile: clean $(IWINFO_LIB_OBJ) $(IWINFO_CLI_OBJ)
 	$(CC) $(IWINFO_LDFLAGS) $(IWINFO_LIB_LDFLAGS) -o $(IWINFO_LIB) $(IWINFO_LIB_OBJ)
+	ln -rs $(IWINFO_LIB) libiwinfo.so.0
+	ln -rs $(IWINFO_LIB) libiwinfo.so
 	$(CC) $(IWINFO_LDFLAGS) $(IWINFO_CLI_LDFLAGS) -o $(IWINFO_CLI) $(IWINFO_CLI_OBJ) $(IWINFO_CLI_LIBFLAGS)
 
 clean:
