@@ -24,7 +24,6 @@
 
 
 static int ioctl_socket = -1;
-struct uci_context *uci_ctx = NULL;
 
 static int iwinfo_ioctl_socket(void)
 {
@@ -366,41 +365,4 @@ void iwinfo_parse_rsn(struct iwinfo_crypto_entry *c, uint8_t *data, uint8_t len,
 
 	data += 2 + (count * 4);
 	len -= 2 + (count * 4);
-}
-
-struct uci_section *iwinfo_uci_get_radio(const char *name, const char *type)
-{
-	struct uci_ptr ptr = {
-		.package = "wireless",
-		.section = name,
-		.flags = (name && *name == '@') ? UCI_LOOKUP_EXTENDED : 0,
-	};
-	const char *opt;
-
-	if (!uci_ctx) {
-		uci_ctx = uci_alloc_context();
-		if (!uci_ctx)
-			return NULL;
-	}
-
-	if (uci_lookup_ptr(uci_ctx, &ptr, NULL, true))
-		return NULL;
-
-	if (!ptr.s || strcmp(ptr.s->type, "wifi-device") != 0)
-		return NULL;
-
-	opt = uci_lookup_option_string(uci_ctx, ptr.s, "type");
-	if (!opt || strcmp(opt, type) != 0)
-		return NULL;
-
-	return ptr.s;
-}
-
-void iwinfo_uci_free(void)
-{
-	if (!uci_ctx)
-		return;
-
-	uci_free_context(uci_ctx);
-	uci_ctx = NULL;
 }
