@@ -21,7 +21,6 @@
 
 #include <sys/socket.h>
 #include <net/if.h>
-#include <uci.h>
 
 #include "iwinfo.h"
 
