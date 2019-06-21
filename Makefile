@@ -21,7 +21,7 @@ IWINFO_BACKENDS    = $(BACKENDS)
 IWINFO_CFLAGS      = $(CFLAGS) -std=gnu99 -fstrict-aliasing -Iinclude
 IWINFO_LDFLAGS     = -lubox
 
-IWINFO_LIB         = libiwinfo.so.0.0
+IWINFO_LIB         = libiwinfo.so.1.0.0
 IWINFO_LIB_LDFLAGS = $(LDFLAGS) -shared
 IWINFO_LIB_OBJ     = iwinfo_utils.o iwinfo_wext.o iwinfo_wext_scan.o iwinfo_lib.o
 
@@ -36,7 +36,7 @@ IWINFO_CLI_LIBFLAGS += -liwinfo
 
 compile: clean $(IWINFO_LIB_OBJ) $(IWINFO_CLI_OBJ)
 	$(CC) $(IWINFO_LDFLAGS) $(IWINFO_LIB_LDFLAGS) -o $(IWINFO_LIB) $(IWINFO_LIB_OBJ)
-	ln -rs $(IWINFO_LIB) libiwinfo.so.0
+	ln -rs $(IWINFO_LIB) libiwinfo.so.1
 	ln -rs $(IWINFO_LIB) libiwinfo.so
 	$(CC) $(IWINFO_LDFLAGS) $(IWINFO_CLI_LDFLAGS) -o $(IWINFO_CLI) $(IWINFO_CLI_OBJ) $(IWINFO_CLI_LIBFLAGS)
 
