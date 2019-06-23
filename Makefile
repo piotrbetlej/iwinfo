@@ -22,7 +22,7 @@ IWINFO_CFLAGS      = $(CFLAGS) -std=gnu99 -fstrict-aliasing -Iinclude
 IWINFO_LDFLAGS     = -lubox
 
 IWINFO_LIB         = libiwinfo.so.1.0.0
-IWINFO_LIB_LDFLAGS = $(LDFLAGS) -shared
+IWINFO_LIB_LDFLAGS = $(LDFLAGS) -shared -Wl,-soname,libiwinfo.so.1
 IWINFO_LIB_OBJ     = iwinfo_utils.o iwinfo_wext.o iwinfo_wext_scan.o iwinfo_lib.o
 
 IWINFO_CLI         = iwinfo
